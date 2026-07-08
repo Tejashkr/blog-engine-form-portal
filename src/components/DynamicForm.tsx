@@ -75,45 +75,67 @@ export function DynamicForm({ form }: DynamicFormProps) {
         setStatus({ type: "error", message: result.message });
       }
     } catch {
-      setStatus({ type: "error", message: "Network error. Please try again." });
+      setStatus({ type: "error", message: "Oops — network hiccup. Try again?" });
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-7">
       {form.fields
         .filter((field) => field.type !== "hidden")
-        .map((field) => (
-          <FormField
+        .map((field, index) => (
+          <div
             key={field.key}
-            field={field}
-            value={values[field.key]}
-            onChange={handleChange}
-          />
+            className="animate-fade-up"
+            style={{ animationDelay: `${index * 0.05}s` }}
+          >
+            <FormField field={field} value={values[field.key]} onChange={handleChange} />
+          </div>
         ))}
 
       {status && (
         <div
           role="alert"
-          className={`rounded-lg border px-4 py-3 text-sm ${
+          className={`rounded-lg border-2 px-4 py-3 text-sm ${
             status.type === "success"
-              ? "border-green-200 bg-green-50 text-green-800 dark:border-green-900 dark:bg-green-950 dark:text-green-200"
-              : "border-red-200 bg-red-50 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200"
+              ? "border-[#81c784] bg-[#e8f5e9] text-[#2e7d32]"
+              : "border-[#ef9a9a] bg-[#ffebee] text-[#c62828]"
           }`}
+          style={{
+            borderRadius: status.type === "success" ? "4px 14px 6px 12px" : "12px 4px 14px 6px",
+          }}
         >
-          {status.message}
+          <p className="font-hand text-xl">
+            {status.type === "success" ? "✓ " : "✗ "}
+            {status.message}
+          </p>
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-      >
-        {isSubmitting ? "Submitting…" : "Submit"}
-      </button>
+      <div className="border-t border-dashed border-[#001b3d]/15 pt-6">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="btn-primary inline-flex w-full items-center justify-center gap-2 px-8 py-3.5 text-sm sm:w-auto"
+        >
+          {isSubmitting ? (
+            <>
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              Sending to n8n…
+            </>
+          ) : (
+            <>
+              <span className="font-hand text-lg">Submit entry</span>
+              <span aria-hidden>→</span>
+            </>
+          )}
+        </button>
+      </div>
     </form>
   );
 }

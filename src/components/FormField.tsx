@@ -9,9 +9,6 @@ interface FormFieldProps {
   error?: string;
 }
 
-const inputClassName =
-  "w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100";
-
 export function FormField({ field, value, onChange, error }: FormFieldProps) {
   const id = `field-${field.key}`;
 
@@ -28,20 +25,20 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
   }
 
   return (
-    <div className="space-y-1.5">
-      <label htmlFor={id} className="block text-sm font-medium text-zinc-800 dark:text-zinc-200">
-        {field.label}
-        {field.required && <span className="ml-1 text-red-500">*</span>}
+    <div className="group/field space-y-1.5">
+      <label htmlFor={id} className="flex items-baseline gap-2">
+        <span className="font-hand text-xl text-[#001b3d]">{field.label}</span>
+        {field.required && <span className="font-hand text-lg text-[#ff7067]">*</span>}
       </label>
 
       {field.type === "textarea" && (
         <textarea
           id={id}
           name={field.key}
-          rows={6}
+          rows={5}
           required={field.required}
           placeholder={field.placeholder}
-          className={inputClassName}
+          className="input-field min-h-[120px]"
           value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(field.key, e.target.value)}
         />
@@ -52,11 +49,11 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
           id={id}
           name={field.key}
           required={field.required}
-          className={inputClassName}
+          className="input-field"
           value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(field.key, e.target.value)}
         >
-          <option value="">Select an option</option>
+          <option value="">— pick one —</option>
           {field.options?.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -68,7 +65,10 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
       {field.type === "radio" && (
         <fieldset className="space-y-2">
           {field.options?.map((option) => (
-            <label key={option.value} className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+            <label
+              key={option.value}
+              className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-[#001b3d]/15 bg-white/40 px-3 py-2 text-sm text-[#001b3d]/80 transition hover:border-[#ff7067]/40"
+            >
               <input
                 type="radio"
                 name={field.key}
@@ -76,7 +76,7 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
                 required={field.required}
                 checked={value === option.value}
                 onChange={() => onChange(field.key, option.value)}
-                className="h-4 w-4 border-zinc-300 text-indigo-600 focus:ring-indigo-500"
+                className="h-4 w-4 border-[#001b3d]/30 text-[#ff7067] focus:ring-[#ff7067]/30"
               />
               {option.label}
             </label>
@@ -92,7 +92,10 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
               : [];
             const checked = selected.includes(option.value);
             return (
-              <label key={option.value} className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+              <label
+                key={option.value}
+                className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-[#001b3d]/15 bg-white/40 px-3 py-2 text-sm text-[#001b3d]/80 transition hover:border-[#ff7067]/40"
+              >
                 <input
                   type="checkbox"
                   name={field.key}
@@ -104,7 +107,7 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
                       : selected.filter((v) => v !== option.value);
                     onChange(field.key, next);
                   }}
-                  className="h-4 w-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500"
+                  className="h-4 w-4 rounded border-[#001b3d]/30 text-[#ff7067] focus:ring-[#ff7067]/30"
                 />
                 {option.label}
               </label>
@@ -121,17 +124,14 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
           required={field.required}
           accept={field.accept}
           multiple={field.multiple}
-          className={`${inputClassName} file:mr-3 file:rounded-md file:border-0 file:bg-indigo-50 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-indigo-700 hover:file:bg-indigo-100`}
+          className="input-field file:mr-3 file:rounded-md file:border file:border-[#001b3d]/20 file:bg-[#fff9c4] file:px-3 file:py-1 file:font-hand file:text-sm file:text-[#001b3d]"
           onChange={(e) => {
             const files = e.target.files;
             if (!files?.length) {
               onChange(field.key, field.multiple ? [] : "");
               return;
             }
-            onChange(
-              field.key,
-              field.multiple ? Array.from(files) : files[0],
-            );
+            onChange(field.key, field.multiple ? Array.from(files) : files[0]);
           }}
         />
       )}
@@ -143,13 +143,13 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
           type={field.type}
           required={field.required}
           placeholder={field.placeholder}
-          className={inputClassName}
+          className="input-field"
           value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(field.key, e.target.value)}
         />
       )}
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="font-hand text-lg text-[#c62828]">{error}</p>}
     </div>
   );
 }

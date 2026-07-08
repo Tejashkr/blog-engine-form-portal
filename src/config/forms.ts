@@ -12,7 +12,7 @@ const formsConfig: FormsConfig = {
     {
       slug: "weekly-blogs",
       title: "Weekly Blogs",
-      description: "Submit your weekly blog entry. Fields map directly to your n8n Form Trigger workflow.",
+      description: "Share your weekly blog — title, week, and reading time. Synced instantly to your workflow.",
       n8nUrl: process.env.N8N_WEEKLY_BLOGS_URL ?? "",
       successMessage: "Your weekly blog has been submitted successfully!",
       fields: [
