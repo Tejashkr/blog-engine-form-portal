@@ -1,14 +1,9 @@
-import { DateStamp, HandUnderline, SketchBox } from "@/components/NotebookDecor";
+import { DateStamp } from "@/components/DateStamp";
+import { HandUnderline, SketchBox } from "@/components/NotebookDecor";
+import { LiveGreeting } from "@/components/LiveGreeting";
 import { StickyNote } from "@/components/StickyNote";
 import { getAllForms } from "@/config/forms";
 import Link from "next/link";
-
-function getGreeting() {
-  const hour = new Date().getHours();
-  if (hour < 12) return "Morning";
-  if (hour < 17) return "Afternoon";
-  return "Evening";
-}
 
 export default function HomePage() {
   const forms = getAllForms();
@@ -21,9 +16,7 @@ export default function HomePage() {
         <div className="mb-3">
           <DateStamp />
         </div>
-        <h1 className="font-display text-4xl font-bold leading-tight text-[#001b3d] sm:text-[2.75rem]">
-          {getGreeting()}, writer.
-        </h1>
+        <LiveGreeting />
         <p className="mt-3 text-base text-[#001b3d]/65">
           You have{" "}
           <HandUnderline>

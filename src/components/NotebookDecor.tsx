@@ -1,15 +1,3 @@
-export function DateStamp() {
-  const now = new Date();
-  const month = now.toLocaleString("en-US", { month: "short" }).toUpperCase();
-  const day = now.getDate();
-
-  return (
-    <span className="inline-block rotate-[-6deg] rounded-full border border-[#ffcdd2] bg-[#fce4ec] px-3 py-0.5 font-hand text-sm font-semibold tracking-wide text-[#c62828] shadow-sm">
-      {month} {day}
-    </span>
-  );
-}
-
 export function HandUnderline({ children }: { children: React.ReactNode }) {
   return (
     <span className="relative inline-block">

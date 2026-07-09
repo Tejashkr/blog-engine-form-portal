@@ -1,5 +1,5 @@
+import { DateStamp } from "@/components/DateStamp";
 import { DynamicForm } from "@/components/DynamicForm";
-import { DateStamp } from "@/components/NotebookDecor";
 import { getFormBySlug } from "@/config/forms";
 import Link from "next/link";
 import { notFound } from "next/navigation";
