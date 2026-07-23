@@ -1,3 +1,4 @@
+import { isRequestAuthenticated, SESSION_COOKIE } from "@/lib/auth";
 import { getFormBySlug } from "@/config/forms";
 import { buildN8nFormData, submitToN8n } from "@/lib/n8n";
 import type { FormField, FormValues } from "@/types/form";
@@ -45,6 +46,14 @@ export async function POST(
 ) {
   const { slug } = await params;
   const form = getFormBySlug(slug);
+
+  const session = request.cookies.get(SESSION_COOKIE)?.value;
+  if (!(await isRequestAuthenticated(session))) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized. Please sign in." },
+      { status: 401 },
+    );
+  }
 
   if (!form) {
     return NextResponse.json({ success: false, message: "Form not found." }, { status: 404 });

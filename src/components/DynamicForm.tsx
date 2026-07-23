@@ -71,6 +71,11 @@ export function DynamicForm({ form }: DynamicFormProps) {
       if (result.success) {
         setStatus({ type: "success", message: result.message });
         setValues(getInitialValues(form));
+      } else if (response.status === 401) {
+        setStatus({ type: "error", message: "Session expired. Please sign in again." });
+        setTimeout(() => {
+          window.location.href = `/login?from=${encodeURIComponent(window.location.pathname)}`;
+        }, 1500);
       } else {
         setStatus({ type: "error", message: result.message });
       }
